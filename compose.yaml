@@ -1,0 +1,29 @@
+services:
+  mysql:
+    image: mysql:9.0.1
+    container_name: mysql_bank
+    environment:
+      ENV_ROOT_USER: ${ENV_ROOT_USER}
+      MYSQL_ROOT_PASSWORD: ${ENV_ROOT_PASSWORD}
+      MYSQL_USER: ${ENV_MYSQL_USER}
+      MYSQL_PASSWORD: ${ENV_MYSQL_PASSWORD}
+      MYSQL_DATABASE: api-bank
+    ports:
+      - "3306:3306"
+    volumes:
+      - caiojacintho:/var/lib/mysql
+
+  api-bank:
+    image: api-bank:latest
+    container_name: api-bank
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/api-bank
+      SPRING_DATASOURCE_USERNAME: ${ENV_ROOT_USER}
+      SPRING_DATASOURCE_PASSWORD: ${ENV_ROOT_PASSWORD}
+    ports:
+      - "8080:8080"
+
+volumes:
+  caiojacintho:
