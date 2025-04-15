@@ -1,1 +1,31 @@
-spring.application.name=api-bank
+spring:
+  config:
+    import: optional:classpath:.env[.properties]
+  application:
+    name: api-bank
+  datasource:
+    url: jdbc:mysql://localhost:3306/api-bank?userTimezone=true&serverTimezone=UTC&createDatabaseIfNotExist=true
+    username: ${ENV_ROOT_USER:root}
+    password: ${ENV_ROOT_PASSWORD:root}
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  threads:
+    virtual:
+      enabled: true
+logging:
+  level:
+    com.jacinthocaio: debug
+server:
+  port: 8080
+  servlet:
+    context-path: /
+  error:
+    include-stacktrace: on_param
+    include-message: always
+    include-binding-errors: always
+    include-exception: false
+  tomcat:
+    threads:
+      max: 20
